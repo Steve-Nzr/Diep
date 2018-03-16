@@ -3,7 +3,6 @@ project(DiepPlusPlus)
 
 set(CMAKE_CXX_STANDARD 17)
 
-
 # Enable debug symbols by default
 # must be done before project() statement
 if(NOT CMAKE_BUILD_TYPE)
@@ -22,11 +21,14 @@ include_directories("${PROJECT_BINARY_DIR}")
 
 # Define sources and executable
 set(EXECUTABLE_NAME "Diep")
-add_executable(${EXECUTABLE_NAME} src/main.cpp)
+add_executable(${EXECUTABLE_NAME} src/main.cpp src/Window/WindowHandler.cpp src/Window/WindowHandler.hh src/ECS/Systems/MoveSystem.cpp src/ECS/Systems/MoveSystem.hh src/ECS/Components/PositionComponent.hh src/ECS/Components/MoveComponent.hh src/ECS/Systems/EventSystem.hh src/ECS/Components/DrawableComponent.hh src/ECS/Systems/DrawableSystem.cpp src/ECS/Systems/DrawableSystem.hh)
 
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
+
+# ECS
+include_directories("${CMAKE_MODULE_PATH}/ECS")
 
 # Detect and add SFML
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 #Find any version 2.X of SFML
 #See the FindSFML.cmake file for additional details and instructions
 find_package(SFML 2 REQUIRED network audio graphics window system)
@@ -35,14 +37,12 @@ if(SFML_FOUND)
     target_link_libraries(${EXECUTABLE_NAME} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
 endif()
 
-
 # Install target
 install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)
-
 
 # CPack packaging
 include(InstallRequiredSystemLibraries)
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
-set(CPACK_PACKAGE_VERSION_MAJOR "${myproject_VERSION_MAJOR}")
-set(CPACK_PACKAGE_VERSION_MINOR "${myproject_VERSION_MINOR}")
+set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
+set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
 include(CPack)
