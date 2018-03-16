@@ -25,6 +25,7 @@ WindowHandler::WindowHandler(const uint32_t width, const uint32_t height, const 
 void WindowHandler::Start() const
 {
     sf::Clock deltaClock;
+    Window->setFramerateLimit(60);
 
     while (Window->isOpen()) {
         HandleEvents();
@@ -43,7 +44,7 @@ void WindowHandler::InitializeSystems()
 
 void WindowHandler::Stop() const
 {
-    World->destroyWorld();
+    //World->destroyWorld(); // (Crash because of unique_ptr...)
 }
 
 void WindowHandler::InitializeEntities()
