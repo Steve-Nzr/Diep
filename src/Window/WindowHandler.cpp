@@ -8,6 +8,7 @@
 #include "../ECS/Components/MoveComponent.hh"
 #include "../ECS/Components/DrawableComponent.hh"
 #include "../ECS/Systems/DrawableSystem.hh"
+#include "../ECS/Systems/ProjectileSystem.hh"
 
 using namespace Diep::Window;
 using namespace Diep;
@@ -40,6 +41,7 @@ void WindowHandler::InitializeSystems()
 {
     World->registerSystem(new _ECS::DrawableSystem(Window));
     World->registerSystem(new _ECS::MoveSystem());
+    World->registerSystem(new _ECS::ProjectileSystem());
 }
 
 void WindowHandler::Stop() const
@@ -52,11 +54,12 @@ void WindowHandler::InitializeEntities()
     Player = World->create();
     Player->assign<_ECS::PositionComponent>();
     Player->assign<_ECS::MoveComponent>();
-    Player->assign<_ECS::DrawableComponent>(_ECS::DrawableComponent::Create("assets/entity_player.png"));
+    Player->assign<_ECS::DrawableComponent>(_ECS::DrawableComponent::Create("../assets/entity_player.png", sf::IntRect(0, 0, 32, 32), sf::Vector2f(16.0f, 16.0f), sf::Vector2f(50.0f, 50.0f)));
 }
 
 void WindowHandler::HandleEvents() const
 {
+    /* Handle & Update movements */
     _ECS::MoveDirectionX dx = GetDirectionFromKey<_ECS::MoveDirectionX>(LeftKey);
     if (dx == _ECS::MoveDirectionX::None) dx = GetDirectionFromKey<_ECS::MoveDirectionX>(RightKey);
 
@@ -68,6 +71,10 @@ void WindowHandler::HandleEvents() const
     sf::Event event;
     while (Window->pollEvent(event)) {
         switch (event.type) {
+        case sf::Event::KeyPressed:
+            if (event.key.code == sf::Keyboard::Space)
+                World->emit<_ECS::LaunchEvent>({Player});
+            break;
         case sf::Event::Closed:
             Window->close();
             return;
@@ -75,15 +82,15 @@ void WindowHandler::HandleEvents() const
     }
 }
 
+void WindowHandler::DrawSprite(sf::Sprite& sprite)
+{
+    Window->draw(sprite);
+}
+
 template<typename T>
 T WindowHandler::GetDirectionFromKey(sf::Keyboard::Key key) const
 {
     return NULL;
-}
-
-void WindowHandler::DrawSprite(sf::Sprite& sprite)
-{
-    Window->draw(sprite);
 }
 
 template <>

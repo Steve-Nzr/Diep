@@ -34,7 +34,9 @@ namespace Diep::_ECS {
         void configure(ECS::World* world) override;
         void unconfigure(ECS::World* world) override;
 
-        virtual void receive(ECS::World* world, const MoveEvent& event);
+        void receive(ECS::World* world, const MoveEvent& event);
+
+        void tick(ECS::World* world, ECS_TICK_TYPE data) override;
     };
 }
 

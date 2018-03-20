@@ -21,7 +21,7 @@ include_directories("${PROJECT_BINARY_DIR}")
 
 # Define sources and executable
 set(EXECUTABLE_NAME "Diep")
-add_executable(${EXECUTABLE_NAME} src/main.cpp src/Window/WindowHandler.cpp src/Window/WindowHandler.hh src/ECS/Systems/MoveSystem.cpp src/ECS/Systems/MoveSystem.hh src/ECS/Components/PositionComponent.hh src/ECS/Components/MoveComponent.hh src/ECS/Systems/EventSystem.hh src/ECS/Components/DrawableComponent.hh src/ECS/Systems/DrawableSystem.cpp src/ECS/Systems/DrawableSystem.hh)
+add_executable(${EXECUTABLE_NAME} src/main.cpp src/Window/WindowHandler.cpp src/Window/WindowHandler.hh src/ECS/Systems/MoveSystem.cpp src/ECS/Systems/MoveSystem.hh src/ECS/Components/PositionComponent.hh src/ECS/Components/MoveComponent.hh src/ECS/Systems/EventSystem.hh src/ECS/Components/DrawableComponent.hh src/ECS/Systems/DrawableSystem.cpp src/ECS/Systems/DrawableSystem.hh src/ECS/Entities/ProjectileEntity.cpp src/ECS/Entities/ProjectileEntity.hh src/ECS/Systems/ProjectileSystem.cpp src/ECS/Systems/ProjectileSystem.hh src/ECS/Components/ProjectileComponent.hh)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 

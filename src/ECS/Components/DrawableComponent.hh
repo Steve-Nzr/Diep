@@ -7,19 +7,21 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include <iostream>
 
 namespace Diep::_ECS {
     struct DrawableComponent {
-        static DrawableComponent Create(const std::string file)
+        static DrawableComponent Create(const std::string file, const sf::IntRect& textureRect,
+                const sf::Vector2f& origin, const sf::Vector2f& position)
         {
             DrawableComponent dc;
 
             dc.Texture = std::make_shared<sf::Texture>();
             dc.Texture->loadFromFile(file);
             dc.Sprite.setTexture(*dc.Texture);
-            dc.Sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
-            dc.Sprite.setOrigin(sf::Vector2f(16, 16));
-            dc.Sprite.setPosition(sf::Vector2f(50, 50));
+            dc.Sprite.setTextureRect(textureRect);
+            dc.Sprite.setOrigin(origin);
+            dc.Sprite.setPosition(position);
 
             return dc;
         }

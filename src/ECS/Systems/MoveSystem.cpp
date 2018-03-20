@@ -23,7 +23,6 @@ void MoveSystem::unconfigure(ECS::World* world)
 void MoveSystem::receive(ECS::World* world, const MoveEvent& event)
 {
     auto move = event.entity->get<MoveComponent>();
-    auto drawable = event.entity->get<DrawableComponent>();
 
     if (event.X == MoveDirectionX::Left && move->VelocityX > -4.0f) move->VelocityX -= (move->VelocityX > 0.0f ? 0.2f : 0.05f);
     else if (event.X == MoveDirectionX::Right && move->VelocityX < 4.0f) move->VelocityX += (move->VelocityX < 0.0f ? 0.2f : 0.05f);
@@ -31,10 +30,25 @@ void MoveSystem::receive(ECS::World* world, const MoveEvent& event)
     if (event.Y == MoveDirectionY::Top && move->VelocityY > -4.0f) move->VelocityY -= (move->VelocityY > 0.0f ? 0.2f : 0.05f);
     else if (event.Y == MoveDirectionY::Bottom && move->VelocityY < 4.0f) move->VelocityY += (move->VelocityY < 0.0f ? 0.2f : 0.05f);
 
+    move->MovedX = !(event.X == MoveDirectionX::None);
+    move->MovedY = !(event.Y == MoveDirectionY::None);
+}
 
-    if (event.X == MoveDirectionX::None) move->VelocityX /= 1.06f;
-    if (event.Y == MoveDirectionY::None) move->VelocityY /= 1.06f;
+void MoveSystem::tick(ECS::World* world, ECS_TICK_TYPE data)
+{
+    world->each<MoveComponent>([](ECS::Entity* ent, ECS::ComponentHandle<MoveComponent> move) {
+        if (move->VelocityX == 0.0f && move->VelocityY == 0.0f)
+            return;
 
-    auto spritePosition = drawable->Sprite.getPosition();
-    drawable->Sprite.setPosition(spritePosition.x + move->VelocityX, spritePosition.y + move->VelocityY);
+        auto drawable = ent->get<DrawableComponent>();
+        auto position = ent->get<PositionComponent>();
+
+        position->X += move->VelocityX;
+        position->Y += move->VelocityY;
+
+        drawable->Sprite.setPosition(position->X, position->Y);
+
+        if (!move->MovedX) move->VelocityX /= 1.06f;
+        if (!move->MovedY) move->VelocityY /= 1.06f;
+    });
 }

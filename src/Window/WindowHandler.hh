@@ -23,7 +23,6 @@ namespace Diep::Window {
 
     public:
         WindowHandler(const WindowHandler&) = delete;
-
         WindowHandler& operator=(const WindowHandler&) = delete;
 
         WindowHandler(uint32_t width, uint32_t height, std::string name);
