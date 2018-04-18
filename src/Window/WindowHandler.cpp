@@ -9,6 +9,7 @@
 #include "../ECS/Components/DrawableComponent.hh"
 #include "../ECS/Systems/DrawableSystem.hh"
 #include "../ECS/Systems/ProjectileSystem.hh"
+#include <future>
 
 using namespace Diep::Window;
 using namespace Diep;
@@ -20,7 +21,7 @@ const auto BottomKey = sf::Keyboard::S;
 
 WindowHandler::WindowHandler(const uint32_t width, const uint32_t height, const std::string name) :
         Window(new sf::RenderWindow(sf::VideoMode(width, height), name)),
-        World(::ECS::World::createWorld())
+        World(ECS::World::createWorld())
 { }
 
 void WindowHandler::Start() const
